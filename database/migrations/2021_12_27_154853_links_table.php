@@ -19,6 +19,7 @@ class LinksTable extends Migration
             $table->string('url');
             $table->string('slug')->unique();
             $table->string('is_active')->default(true);
+            $table->integer('redirects')->default(0);
             $table->timestamps();
         });
     }
