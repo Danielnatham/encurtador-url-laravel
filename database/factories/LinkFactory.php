@@ -24,4 +24,10 @@ class LinkFactory extends Factory
             'slug' => Str::random(6),
         ];
     }
+
+    public function ofUser(User $user){
+        return $this->state([
+            'user_id' => $user->id,
+        ]);
+    }
 }
