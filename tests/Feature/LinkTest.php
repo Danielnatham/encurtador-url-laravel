@@ -180,7 +180,7 @@ class LinkTest extends TestCase
         public function test_can_redirect(){
             
             $this->actingAs($this->user)
-                    ->get('redirect', $this->link->slug)
+                    ->get(route('redirect', $this->link->slug))
                     ->assertRedirect($this->link->url);
         }
 
@@ -190,11 +190,11 @@ class LinkTest extends TestCase
          */
         public function test_cannot_redirect_if_link_not_active(){
 
-            $this->link->update(['isActive' => false]);
+            $this->link->update(['is_active' => false]);
 
              $this->actingAs($this->user)
-                    ->get('redirect', $this->link->slug)
-                    ->assertStatus(403);
+                    ->get(route('redirect', $this->link->slug))
+                    ->assertStatus(404);
         }
 
 
