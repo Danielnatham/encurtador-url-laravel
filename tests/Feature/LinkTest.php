@@ -35,16 +35,7 @@ class LinkTest extends TestCase
                     ->get(route('links.create'))
                     ->assertSeeLivewire('create-link');   
         }
-
-        /** @test
-         * Verifies if the user can retrive the link edit page livewire component
-         */
-        function test_link_editing_page_contains_livewire_components(){
-            $this->actingAs($this->user)
-                    ->get(route('links.edit', $this->link))
-                    ->assertSeeLivewire('edit-link', ['link'=> $this->link]);   
-        }
-
+        
         /** @test
          * Verifies if the user can retrive the link index page livewire component
          */
@@ -116,61 +107,6 @@ class LinkTest extends TestCase
 
             $this->assertDatabaseCount('links', 2);
 
-        }
-        
-        /**
-         * @test
-         * Verifies if the link is being edited
-         */
-        function test_can_update_link(){
-
-            $this->assertNotEquals($this->link->slug, 'my-test-slug');
-            $this->assertNotEquals($this->link->url, 'https://google.com.br');
-            
-            Livewire::actingAs($this->user)
-                    ->test('edit-link', ['link' => $this->link])
-                    ->set('url', 'https://google.com.br')
-                    ->set('slug', 'my-test-slug')
-                    ->call('saveLink')
-                    ->assertRedirect(route('links'));
-            
-            $this->assertEquals($this->link->refresh()->slug, 'my-test-slug');
-            $this->assertEquals($this->link->refresh()->url, 'htpps://google.com.br');
-        }
-
-        /**
-         * @test
-         * Verifies if the link is being edited
-         * even if we using the same slug
-         */
-        function test_can_update_link_with_same_slug(){
-
-            $this->assertNotEquals($this->link->url, 'https://google.com.br');
-
-            Livewire::actingAs($this->user)
-                    ->test('edit-link', ['link'=> $this->link])
-                    ->set('url', 'https://google.com.br')
-                    ->set('slug', $this->link->slug)
-                    ->set('isActive', false)
-                    ->call('save-link')
-                    ->assertRedirect(route('links'));
-
-            $this->assertEquals($this->link->refresh()->link, 'https://google.com.br');
-        }
-
-        /**
-         * @test
-         * Verifies if we cannot update a link using a taken slug
-         */
-        function test_cannot_update_link_with_non_unique_slug(){
-
-            $testLink = Link::factory()->create(['slug' => 'test-slug']);
-            
-            Livewire::actingAs($this->user)
-                    ->test('edit-link', ['link' => $this->link])
-                    ->set('url', 'https://google.com.br')
-                    ->set('slug', $testLink->slug)
-                    ->assertHasErrors('slug');
         }
 
         /**

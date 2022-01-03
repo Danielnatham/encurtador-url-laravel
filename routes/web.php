@@ -15,21 +15,19 @@ use App\Http\Controllers\LinkController;
 |
 */
 
+require __DIR__.'/auth.php';
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/links', [LinkController::class, 'index'])->name('links');
 
-Route::get('/links/create',[LinkController::class, 'create'])->name('links.create');
+Route::get('/links', [LinkController::class, 'index'])
+        ->middleware(['auth'])
+        ->name('links');
 
-Route::get('/links/edit', [LinkController::class, 'edit'])->name('links.edit');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
+Route::get('/links/create',[LinkController::class, 'create'])
+        ->name('links.create');
 
 Route::get('{link:slug}', function(Link $link){
     
