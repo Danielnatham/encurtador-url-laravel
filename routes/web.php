@@ -17,12 +17,12 @@ use App\Http\Controllers\LinkController;
 
 require __DIR__.'/auth.php';
 
+Route::get('/',[LinkController::class, 'create'])
+        ->name('links.create');
+
 Route::get('/links', [LinkController::class, 'index'])
         ->middleware(['auth'])
         ->name('links');
-
-Route::get('/',[LinkController::class, 'create'])
-        ->name('links.create');
 
 Route::get('{link:slug}', function(Link $link){
     

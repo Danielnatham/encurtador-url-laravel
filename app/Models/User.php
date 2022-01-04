@@ -41,12 +41,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * User one to many Link relationship
-     * 
-     */
-    public function links(){
-        return $this->hasMany(Link::class);
-    }
 }

@@ -19,15 +19,8 @@ class LinkFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
             'url' => $this->faker->url(),
             'slug' => Str::random(6),
         ];
-    }
-
-    public function ofUser(User $user){
-        return $this->state([
-            'user_id' => $user->id,
-        ]);
     }
 }

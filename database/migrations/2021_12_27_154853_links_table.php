@@ -15,11 +15,9 @@ class LinksTable extends Migration
     {
          Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
             $table->string('url');
             $table->string('slug')->unique();
             $table->string('is_active')->default(true);
-            $table->integer('redirects')->default(0);
             $table->timestamps();
         });
     }

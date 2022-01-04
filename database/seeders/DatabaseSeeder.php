@@ -15,11 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()
-            ->has(Link::factory()->count(100))
-            ->create([
-                'name'=> 'Usuario',
-                'email' => 'Usuario@email.com',
-            ]);
+            User::factory()
+                ->create([
+                    'name' => 'Usuario',
+                    'email' => 'user@test.com',
+                ]);
+
+            Link::factory()
+                ->count(100)
+                ->create();
     }
 }
