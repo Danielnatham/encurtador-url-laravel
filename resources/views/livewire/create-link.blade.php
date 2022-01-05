@@ -12,6 +12,12 @@
             @error('slug') <span class=" text-white ">{{ $message }}</span> @enderror
         </div>
 
+        <div class="mb-4">
+            <label for="expiration" class="text-white">Data de expiração</label>
+            <x-input wire:model.lazy="expiration" id="expiration" class="block my-2 w-full text-black" type="date"/>
+            @error('expiration') <span class=" text-white ">{{ $message }}</span> @enderror
+        </div>
+
         <div class="flex justify-end">
             <button
                 wire:click="resetForm"

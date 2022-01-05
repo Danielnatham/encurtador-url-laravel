@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Link;
 use App\Models\User;
+use Carbon\Carbon;
 use Livewire\Livewire;
 use Illuminate\Routing\Route;
 use Vinkla\Hashids\Facades\Hashids;
@@ -24,7 +25,7 @@ class LinkTest extends TestCase
             parent::setUp();
 
             $this->user = User::factory()->create();
-            $this->link = Link::factory()->ofUser($this->user)->create();
+            $this->link = Link::factory()->create();
         }
 
         /** @test
@@ -57,12 +58,12 @@ class LinkTest extends TestCase
                     ->test('create-link')
                     ->set('url', 'https://google.com.br')
                     ->set('slug', 'my-test-slug')
-                    ->call('create-link')
-                    ->assertRedirect(route('links'));
+                    ->call('saveLink')
+                    ->assertRedirect(route('links.result', ['slug' => 'my-test-slug']));
 
             $this->assertDatabaseCount('links', 2);
             $this->assertDatabaseHas('links', [
-                'url' => 'google.com.br',
+                'url' => 'https://google.com.br',
                 'slug' => 'my-test-slug',
             ]);
         }
@@ -79,13 +80,13 @@ class LinkTest extends TestCase
                     ->test('create-link')
                     ->set('url', 'https://google.com.br')
                     ->set('slug', null)
-                    ->call('create-link')
-                    ->assertRedirect(route('links'));
+                    ->call('saveLink')
+                    ->assertRedirect(route('links.result', ['slug' => 'Jb01W']));
 
             $this->assertDatabaseCount('links', 2);
             $this->assertDatabaseHas('links', [
-                'url' => 'google.com.br',
-                'slug' => Hashids::encode(2),
+                'url' => 'https://google.com.br',
+                'slug' => 'Jb01W',
             ]);
         }
 
@@ -102,10 +103,10 @@ class LinkTest extends TestCase
                     ->test('create-link')
                     ->set('url', 'https://google.com.br')
                     ->set('slug', $this->link->slug)
-                    ->call('create-link')
+                    ->call('saveLink')
                     ->assertHasErrors(['slug' => 'unique']);
 
-            $this->assertDatabaseCount('links', 2);
+            $this->assertDatabaseCount('links', 1);
 
         }
 
@@ -124,9 +125,9 @@ class LinkTest extends TestCase
          * @test
          * Verifies if the desable short url dont redirects
          */
-        public function test_cannot_redirect_if_link_not_active(){
+        public function test_cannot_redirect_if_link_expires(){
 
-            $this->link->update(['is_active' => false]);
+            $this->link->update(['expires_at' => Carbon::now()->subDay(1)]);
 
              $this->actingAs($this->user)
                     ->get(route('redirect', $this->link->slug))

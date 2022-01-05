@@ -3,6 +3,7 @@
 use App\Models\Link;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LinkController;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +25,15 @@ Route::get('/links', [LinkController::class, 'index'])
         ->middleware(['auth'])
         ->name('links');
 
+Route::get('/links/{slug}', [LinkController::class, 'result'] )
+        ->name('links.result');
+
+
+
+        
 Route::get('{link:slug}', function(Link $link){
     
-    if(! $link->is_active){
+    if( $link->expires_at < Carbon::now()){
         abort(404);
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ class LinksTable extends Migration
             $table->id();
             $table->string('url');
             $table->string('slug')->unique();
-            $table->string('is_active')->default(true);
+            $table->expires()->default(Carbon::now()->addWeek());
             $table->timestamps();
         });
     }
@@ -28,7 +29,7 @@ class LinksTable extends Migration
      * @return void
      */
     public function down()
-    {
+    {   
         Schema::dropIfExists('links');
     }
 }
