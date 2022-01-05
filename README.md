@@ -51,7 +51,7 @@ DB_USERNAME = <usuario>
 DB_PASSWORD = <senha>
 ```
 
-## 🚀 Iniciando o blog localmente
+## 🚀 Iniciando a aplicação localmente
 
 ### Para iniciar o projeto, siga estas etapas:
 
