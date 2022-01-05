@@ -25,6 +25,7 @@
          <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+                    <a href="{{ route('links.create') }}" class="ml-4 text-sm text-gray-300 dark:text-gray-500 underline">Inicio</a>
                     @auth
                         <a href="{{ url('/links') }}" class="text-sm text-gray-300 dark:text-gray-500 underline">Dashboard</a>
                     @else

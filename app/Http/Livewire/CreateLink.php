@@ -18,7 +18,7 @@ class CreateLink extends Component
     protected $rules = [
         'url' => 'required|url|max:255',
         'slug' => 'nullable|alpha_dash|unique:links,slug|min:3|max:25',
-        'expiration' => 'date|after:today|nullable'
+        'expiration' => 'date|after:today|nullable|before: +1 year'
     ];
 
     public function updated($property)
